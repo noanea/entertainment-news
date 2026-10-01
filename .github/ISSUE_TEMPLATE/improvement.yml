@@ -1,0 +1,37 @@
+name: 改善要望
+description: 表示や使い勝手についての提案
+title: "[改善] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: どんなことで困っていますか？
+      description: 現在の表示や操作について教えてください。
+      placeholder: 例）作品を探すとき、配信サービスごとに見分けにくい
+    validations:
+      required: true
+  - type: textarea
+    id: desired
+    attributes:
+      label: どうなると使いやすいですか？
+      placeholder: 例）配信サービス名を予定の近くに表示してほしい
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: 関係するジャンル
+      options:
+        - アニメ
+        - 漫画
+        - ゲーム
+        - 検索・絞り込み
+        - 表示・デザイン
+        - その他
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: "公開Issueです。パスワード、APIキー、個人情報は記載しないでください。"
+
