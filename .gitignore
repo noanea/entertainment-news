@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.DS_Store
+
+# Legacy RSS collector is not part of the public release
+data/news.json
+scripts/
+tests/
