@@ -1,0 +1,403 @@
+{
+  "version": "1.1",
+  "updatedAt": "2026-10-01",
+  "items": [
+    {
+      "kind": "game",
+      "series": "Ghost of Yōtei Complete Edition",
+      "title": "発売",
+      "shortTitle": "Ghost of Yōtei",
+      "date": "2026-10-01",
+      "dateLabel": "2026年10月1日",
+      "status": "confirmed",
+      "filters": [
+        "PS5"
+      ],
+      "detail": "PlayStation 5版。本日発売。",
+      "source": "PlayStation.Blog",
+      "url": "https://blog.ja.playstation.com/2026/10/01/20261001-monthly-picks-s/"
+    },
+    {
+      "kind": "game",
+      "series": "ACE COMBAT 8: WINGS OF THEVE",
+      "title": "発売",
+      "shortTitle": "ACE COMBAT 8",
+      "date": "2026-10-02",
+      "dateLabel": "2026年10月2日",
+      "status": "confirmed",
+      "filters": [
+        "PS5",
+        "Steam",
+        "Xbox"
+      ],
+      "detail": "PlayStation 5、Xbox Series X|S、PC（Steam）。",
+      "source": "バンダイナムコエンターテインメント",
+      "url": "https://en.bandainamcoent.eu/ace-combat/news/ace-combat-8-wings-of-theve-launches-early-access"
+    },
+    {
+      "kind": "manga",
+      "series": "BORUTO-ボルト- -TWO BLUE VORTEX-",
+      "title": "第9巻 発売",
+      "shortTitle": "BORUTO 9",
+      "date": "2026-10-02",
+      "dateLabel": "2026年10月2日",
+      "status": "confirmed",
+      "filters": [
+        "ジャンプ"
+      ],
+      "detail": "紙版コミックス。",
+      "source": "Vジャンプ公式",
+      "url": "https://vjump.shueisha.co.jp/vjbooks/borutotbv9/"
+    },
+    {
+      "kind": "manga",
+      "series": "さむわんへるつ",
+      "title": "第5巻 発売",
+      "shortTitle": "さむわんへるつ 5",
+      "date": "2026-10-02",
+      "dateLabel": "2026年10月2日",
+      "status": "confirmed",
+      "filters": [
+        "ジャンプ"
+      ],
+      "detail": "紙版・デジタル版ともに発売予定。",
+      "source": "集英社",
+      "url": "https://www.shueisha.co.jp/books/items/contents_amp.html?jdcn=08X10000000074709600"
+    },
+    {
+      "kind": "anime",
+      "series": "氷の城壁",
+      "title": "Season 2 Netflix配信開始",
+      "shortTitle": "氷の城壁 S2",
+      "date": "2026-10-02",
+      "dateLabel": "2026年10月2日",
+      "status": "confirmed",
+      "filters": [
+        "Netflix"
+      ],
+      "detail": "日本時間10月2日開始。以降、毎週新エピソード配信予定。",
+      "source": "Netflix ニュースルーム",
+      "url": "https://about.netflix.com/en/news/romance-anime-lineup-october"
+    },
+    {
+      "kind": "anime",
+      "series": "薬屋のひとりごと",
+      "title": "第3期 放送開始",
+      "shortTitle": "薬屋のひとりごと 3期",
+      "date": "2026-10-02",
+      "dateLabel": "2026年10月2日",
+      "status": "confirmed",
+      "filters": [
+        "TV"
+      ],
+      "detail": "日本テレビ系フラアニ枠で毎週金曜23時から放送。配信は放送終了後から順次。",
+      "source": "薬屋のひとりごと 公式サイト",
+      "url": "https://kusuriyanohitorigoto.jp/news/2623/"
+    },
+    {
+      "kind": "anime",
+      "series": "薬屋のひとりごと",
+      "title": "第3期 第1話 配信開始",
+      "shortTitle": "薬屋のひとりごと 配信",
+      "date": "2026-10-03",
+      "dateLabel": "2026年10月3日",
+      "status": "confirmed",
+      "filters": [
+        "Netflix",
+        "Prime Video"
+      ],
+      "detail": "初回は10月3日（土）0時から。毎週土曜、テレビ放送終了後に各配信サービスで順次配信。",
+      "source": "薬屋のひとりごと 公式配信情報",
+      "url": "https://kusuriyanohitorigoto.jp/season3/onair/"
+    },
+    {
+      "kind": "anime",
+      "series": "アオのハコ",
+      "title": "Season 2 Netflix配信開始",
+      "shortTitle": "アオのハコ S2",
+      "date": "2026-10-04",
+      "dateLabel": "2026年10月4日",
+      "status": "confirmed",
+      "filters": [
+        "Netflix"
+      ],
+      "detail": "以降、毎週新エピソード配信予定。",
+      "source": "Netflix ニュースルーム",
+      "url": "https://about.netflix.com/en/news/romance-anime-lineup-october"
+    },
+    {
+      "kind": "game",
+      "series": "KINGDOM HEARTS Collection [I～III]",
+      "title": "発売",
+      "shortTitle": "KINGDOM HEARTS Collection",
+      "date": "2026-10-08",
+      "dateLabel": "2026年10月8日",
+      "status": "confirmed",
+      "filters": [
+        "PS5"
+      ],
+      "detail": "PlayStation 5版。",
+      "source": "PlayStation.Blog",
+      "url": "https://blog.ja.playstation.com/2026/10/01/20261001-monthly-picks-s/"
+    },
+    {
+      "kind": "game",
+      "series": "ドラゴンズドグマ 2：ダークアリズン",
+      "title": "発売",
+      "shortTitle": "ドラゴンズドグマ 2",
+      "date": "2026-10-09",
+      "dateLabel": "2026年10月9日",
+      "status": "confirmed",
+      "filters": [
+        "PS5"
+      ],
+      "detail": "PlayStation 5版。",
+      "source": "PlayStation.Blog",
+      "url": "https://blog.ja.playstation.com/2026/10/01/20261001-monthly-picks-s/"
+    },
+    {
+      "kind": "game",
+      "series": "テイルズ オブ エターニア リマスター",
+      "title": "発売",
+      "shortTitle": "テイルズ オブ エターニア",
+      "date": "2026-10-15",
+      "dateLabel": "2026年10月15日",
+      "status": "confirmed",
+      "filters": [
+        "PS5"
+      ],
+      "detail": "PlayStation 5向け発売予定。",
+      "source": "PlayStation.Blog",
+      "url": "https://blog.ja.playstation.com/2026/10/01/20261001-monthly-picks-s/"
+    },
+    {
+      "kind": "game",
+      "series": "Castlevania: Belmont’s Curse",
+      "title": "発売",
+      "shortTitle": "Castlevania: Belmont’s Curse",
+      "date": "2026-10-15",
+      "dateLabel": "2026年10月15日",
+      "status": "confirmed",
+      "filters": [
+        "PS5"
+      ],
+      "detail": "PlayStation 5版。",
+      "source": "PlayStation.Blog",
+      "url": "https://blog.ja.playstation.com/2026/10/01/20261001-monthly-picks-s/"
+    },
+    {
+      "kind": "game",
+      "series": "バイオハザード RE:2／RE:3／RE:4",
+      "title": "Nintendo Switch 2版 デジタル発売",
+      "shortTitle": "バイオハザード REシリーズ",
+      "date": "2026-10-16",
+      "dateLabel": "2026年10月16日",
+      "status": "confirmed",
+      "filters": [
+        "Switch 2"
+      ],
+      "detail": "RE:2 Z Version デラックスエディション、RE:3 Z Version、RE:4 Gold Editionのデジタル版。パッケージ版は2027年1月29日発売予定。",
+      "source": "カプコン",
+      "url": "https://www.capcom.co.jp/ir/news/html/260910.html"
+    },
+    {
+      "kind": "game",
+      "series": "レゴ® ハリー・ポッター™ コレクション",
+      "title": "Nintendo Switch 2版 デジタル発売",
+      "shortTitle": "レゴ ハリー・ポッター",
+      "date": "2026-10-16",
+      "dateLabel": "2026年10月16日",
+      "status": "confirmed",
+      "filters": [
+        "Switch 2"
+      ],
+      "detail": "デジタル版は10月16日、パッケージ版は10月29日発売予定。",
+      "source": "セガ",
+      "url": "https://www.sega.co.jp/release/260902_2.html"
+    },
+    {
+      "kind": "game",
+      "series": "ステューピッド・ネバー・ダイズ",
+      "title": "発売",
+      "shortTitle": "Stupid Never Dies",
+      "date": "2026-10-22",
+      "dateLabel": "2026年10月22日",
+      "status": "confirmed",
+      "filters": [
+        "PS5",
+        "Steam"
+      ],
+      "detail": "PlayStation 5／PC（Steam）。",
+      "source": "セガ",
+      "url": "https://www.sega.co.jp/release/260730_1.html"
+    },
+    {
+      "kind": "game",
+      "series": "デモンズナイトフィーバー",
+      "title": "発売",
+      "shortTitle": "デモンズナイトフィーバー",
+      "date": "2026-10-22",
+      "dateLabel": "2026年10月22日",
+      "status": "confirmed",
+      "filters": [
+        "PS5",
+        "Switch",
+        "Steam"
+      ],
+      "detail": "PlayStation 5／Nintendo Switch／Steam。",
+      "source": "アークシステムワークス",
+      "url": "https://www.arcsystemworks.jp/demonsnightfever/"
+    },
+    {
+      "kind": "game",
+      "series": "FINAL FANTASY RESONANCE",
+      "title": "発売",
+      "shortTitle": "FINAL FANTASY RESONANCE",
+      "date": "2026-10-22",
+      "dateLabel": "2026年10月22日",
+      "status": "confirmed",
+      "filters": [
+        "PS5"
+      ],
+      "detail": "PlayStation 5版。",
+      "source": "PlayStation.Blog",
+      "url": "https://blog.ja.playstation.com/2026/10/01/20261001-monthly-picks-s/"
+    },
+    {
+      "kind": "game",
+      "series": "Call of Duty: Modern Warfare 4",
+      "title": "発売",
+      "shortTitle": "Call of Duty: Modern Warfare 4",
+      "date": "2026-10-23",
+      "dateLabel": "2026年10月23日",
+      "status": "confirmed",
+      "filters": [
+        "PS5"
+      ],
+      "detail": "PlayStation 5向け発売予定。",
+      "source": "PlayStation.Blog",
+      "url": "https://blog.ja.playstation.com/2026/10/01/20261001-monthly-picks-s/"
+    },
+    {
+      "kind": "anime",
+      "series": "わたしの幸せな結婚",
+      "title": "特別篇 全3話 Netflix配信",
+      "shortTitle": "わたしの幸せな結婚 特別篇",
+      "date": "2026-10-25",
+      "dateLabel": "2026年10月25日",
+      "status": "confirmed",
+      "filters": [
+        "Netflix"
+      ],
+      "detail": "特別篇3話の配信予定。",
+      "source": "Netflix ニュースルーム",
+      "url": "https://about.netflix.com/en/news/romance-anime-lineup-october"
+    },
+    {
+      "kind": "game",
+      "series": "Dune: Awakening",
+      "title": "発売",
+      "shortTitle": "Dune: Awakening",
+      "date": "2026-10-29",
+      "dateLabel": "2026年10月29日",
+      "status": "confirmed",
+      "filters": [
+        "PS5"
+      ],
+      "detail": "PlayStation 5版。",
+      "source": "PlayStation.Blog",
+      "url": "https://blog.ja.playstation.com/2026/10/01/20261001-monthly-picks-s/"
+    },
+    {
+      "kind": "game",
+      "series": "Phantom Blade Zero",
+      "title": "発売",
+      "shortTitle": "Phantom Blade Zero",
+      "date": "2026-10-29",
+      "dateLabel": "2026年10月29日",
+      "status": "confirmed",
+      "filters": [
+        "PS5"
+      ],
+      "detail": "PlayStation 5向け配信予定。",
+      "source": "PlayStation.Blog",
+      "url": "https://blog.ja.playstation.com/2026/10/01/20261001-monthly-picks-s/"
+    },
+    {
+      "kind": "game",
+      "series": "モンスターハンターワイルズ",
+      "title": "Nintendo Switch 2版 発売",
+      "shortTitle": "モンスターハンターワイルズ",
+      "date": "2026-12-04",
+      "dateLabel": "2026年12月4日",
+      "status": "confirmed",
+      "filters": [
+        "Switch 2"
+      ],
+      "detail": "Nintendo Switch 2版。PS5／Xbox Series X|S／PC版は発売済みです。",
+      "source": "カプコン",
+      "url": "https://www.capcom.co.jp/ir/news/html/260910.html"
+    },
+    {
+      "kind": "manga",
+      "series": "ブルーロック",
+      "title": "第41巻 発売",
+      "shortTitle": "ブルーロック 41",
+      "date": "2026-11-17",
+      "dateLabel": "2026年11月17日",
+      "status": "confirmed",
+      "filters": [
+        "マガジン"
+      ],
+      "detail": "講談社のコミック発売予定表に掲載。",
+      "source": "講談社 コミック発売予定表",
+      "url": "https://www.kodansha.co.jp/comic/calendar/202611"
+    },
+    {
+      "kind": "anime",
+      "series": "無職転生Ⅲ",
+      "title": "第2クール 放送開始",
+      "shortTitle": "無職転生Ⅲ 第2クール",
+      "dateLabel": "2027年",
+      "date": null,
+      "status": "confirmed",
+      "filters": [
+        "TV"
+      ],
+      "detail": "公式発表は2027年放送まで。放送開始日とNetflix配信日は未発表です。",
+      "basis": "年のみ公式発表",
+      "source": "無職転生 公式サイト",
+      "url": "https://mushokutensei.jp/news/page/8/"
+    },
+    {
+      "kind": "anime",
+      "series": "無職転生Ⅲ",
+      "title": "第2クール Netflix配信",
+      "dateLabel": "未発表",
+      "date": null,
+      "status": "pending",
+      "filters": [
+        "Netflix"
+      ],
+      "detail": "Netflixでの配信開始日は未発表。公式情報が出るまで日付は予測しません。",
+      "source": "無職転生 公式サイト",
+      "url": "https://mushokutensei.jp/"
+    },
+    {
+      "kind": "anime",
+      "series": "葬送のフリーレン",
+      "title": "第3期『黄金郷編』放送開始",
+      "dateLabel": "2027年10月",
+      "date": null,
+      "status": "confirmed",
+      "filters": [
+        "TV"
+      ],
+      "detail": "公式発表は2027年10月放送まで。",
+      "basis": "月まで公式発表",
+      "source": "葬送のフリーレン 公式サイト",
+      "url": "https://frieren-anime.jp/news/"
+    }
+  ]
+}
+
