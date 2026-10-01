@@ -1,0 +1,37 @@
+name: 不具合報告
+description: 表示や操作の問題を報告
+title: "[不具合] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: behavior
+    attributes:
+      label: 起きたこと
+      description: 実際の表示や動作を教えてください。
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 再現手順
+      placeholder: |-
+        1. ページを開く
+        2. 作品名を検索する
+        3. 表示を確認する
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: 端末・ブラウザ
+      placeholder: 例）iPhone 15 / Safari、Windows 11 / Chrome
+    validations:
+      required: false
+  - type: textarea
+    id: evidence
+    attributes:
+      label: スクリーンショット（任意）
+      description: 個人情報や秘密情報が写っていないことを確認して添付してください。
+    validations:
+      required: false
+
