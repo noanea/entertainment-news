@@ -1,0 +1,31 @@
+name: 情報の修正
+description: 発売日・配信日・作品情報の誤りや更新を報告
+title: "[情報修正] "
+labels: ["documentation"]
+body:
+  - type: input
+    id: work
+    attributes:
+      label: 作品名
+      placeholder: 例）作品タイトル
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: 修正したい内容
+      description: 現在の掲載内容と、正しい内容を教えてください。
+    validations:
+      required: true
+  - type: input
+    id: official-source
+    attributes:
+      label: 公式の出典URL
+      description: 作品公式、出版社、販売元、配信サービスなどのURLを記載してください。
+      placeholder: https://...
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: "公式情報で確認できる内容をお知らせください。公開Issueに秘密情報や個人情報を書かないでください。"
+
