@@ -5,4 +5,8 @@ __pycache__/
 # Legacy RSS collector is not part of the public release
 data/news.json
 scripts/
+!scripts/
+scripts/*
+!scripts/collect_official_updates.py
 tests/
+
