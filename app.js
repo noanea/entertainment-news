@@ -85,3 +85,10 @@ $('#search').addEventListener('input',e=>{state.query=e.target.value.trim().toLo
 $('#prev').onclick=()=>{state.month.setFullYear(state.month.getFullYear()-1);render();}; $('#next').onclick=()=>{state.month.setFullYear(state.month.getFullYear()+1);render();}; $('#today').onclick=()=>{state.month=new Date(today);render();};
 fetch('data/schedule.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error();return r.json();}).then(d=>{entries=Array.isArray(d.items)?d.items:[];$('#last-updated').textContent=d.updatedAt?`予定確認日：${d.updatedAt}`:'予定確認日：未記載';render();}).catch(()=>{$('#last-updated').textContent='予定データを読み込めませんでした';$('#undated').append(make('p','empty','予定データを読み込めませんでした。'));});
 
+fetch('data/official-updates.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error();return r.json();}).then(d=>{
+  const items=Array.isArray(d.items)?d.items:[]; if(!items.length)return;
+  const section=$('#official-updates'),host=$('#announcements');host.replaceChildren();
+  items.forEach(item=>{const card=make('article','event-card update-card');const body=make('div','event-body');body.append(make('span','badge kind-manga',item.source||'公式RSS'),make('h3','',item.series||'登録作品'),make('p','event-title',item.title));if(item.date)body.append(make('p','event-detail',item.date));const a=document.createElement('a');a.className='source';a.textContent='公式記事を確認 ↗';try{const url=new URL(item.url);if(url.protocol==='https:'&&['www.shueisha.co.jp','shueisha.co.jp'].includes(url.hostname)){a.href=url.href;a.target='_blank';a.rel='noopener noreferrer';}}catch{}if(a.href)body.append(a);card.append(body);host.append(card);});
+  $('#updates-checked').textContent=`最終チェック：${d.checkedAt||'不明'}`;section.hidden=false;
+}).catch(()=>{});
+
