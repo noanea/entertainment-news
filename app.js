@@ -1,13 +1,15 @@
 const $ = (s) => document.querySelector(s);
-const state = { kind: 'all', filter: '', query: '', month: new Date(), view: 'list' };
+const state = { kind: 'all', filter: '', query: '', month: new Date(), view: 'list', favoritesOnly: false };
 let entries = [];
+let favoriteSeries = new Set();
+try { favoriteSeries = new Set(JSON.parse(localStorage.getItem('tsugiitsu-favorites') || '[]')); } catch {}
 const kindNames = { anime: 'アニメ', manga: '漫画', game: 'ゲーム' };
 const filtersByKind = { anime: ['TV','Netflix','Prime Video','Disney+','劇場'], manga: ['ジャンプ','マガジン','サンデー','チャンピオン','その他'], game: ['Steam','PS5','PS4','Switch 2','Switch','Xbox','スマホ'] };
 const today = new Date(); today.setDate(1); today.setHours(0,0,0,0);
 state.month = new Date(today);
 const safe = (value) => String(value ?? '');
 function make(tag, cls, value) { const n = document.createElement(tag); if (cls) n.className = cls; if (value) n.textContent = value; return n; }
-function matches(item) { return (state.kind === 'all' || item.kind === state.kind) && (!state.filter || (item.filters || []).includes(state.filter)) && (!state.query || `${item.title} ${item.series} ${item.detail || ''}`.toLocaleLowerCase('ja-JP').includes(state.query)); }
+function matches(item) { return (!state.favoritesOnly || favoriteSeries.has(item.series)) && (state.kind === 'all' || item.kind === state.kind) && (!state.filter || (item.filters || []).includes(state.filter)) && (!state.query || `${item.title} ${item.series} ${item.detail || ''}`.toLocaleLowerCase('ja-JP').includes(state.query)); }
 function tagLabel(tag) { return ({Netflix:'Netflix','Prime Video':'Prime Video',TV:'テレビ放送',Steam:'Steam',PS5:'PS5',PS4:'PS4',Switch:'Switch','Switch 2':'Switch 2',Xbox:'Xbox',ジャンプ:'ジャンプ',マガジン:'マガジン'})[tag] || tag; }
 function card(item) {
   const article = make('article', 'event-card');
@@ -16,7 +18,19 @@ function card(item) {
   const date = make('div', 'event-date', item.dateLabel || '未発表');
   const body = make('div', 'event-body');
   const badges = make('div', 'badges'); badges.append(make('span', `badge ${item.status}`, item.status === 'confirmed' ? '公式発表' : item.status === 'estimate' ? '予想' : '未発表'), make('span', `badge kind-${item.kind}`, kindNames[item.kind]));
-  body.append(badges, make('h3', '', item.series), make('p', 'event-title', item.title));
+  const heading = make('div', 'event-heading');
+  heading.append(make('h3', '', item.series));
+  const isFavorite = favoriteSeries.has(item.series);
+  const favorite = make('button', `favorite-button${isFavorite ? ' is-favorite' : ''}`, isFavorite ? '★ お気に入り' : '☆ お気に入り');
+  favorite.type = 'button'; favorite.setAttribute('aria-pressed', String(isFavorite));
+  favorite.setAttribute('aria-label', item.series + 'を' + (isFavorite ? 'お気に入りから外す' : 'お気に入りに追加'));
+  favorite.onclick = () => {
+    if (favoriteSeries.has(item.series)) favoriteSeries.delete(item.series); else favoriteSeries.add(item.series);
+    try { localStorage.setItem('tsugiitsu-favorites', JSON.stringify([...favoriteSeries])); } catch {}
+    render();
+  };
+  heading.append(favorite);
+  body.append(badges, heading, make('p', 'event-title', item.title));
   if (item.detail) body.append(make('p', 'event-detail', item.detail));
   const meta = make('div', 'event-meta'); (item.filters || []).forEach((t) => meta.append(make('span', 'chip', tagLabel(t)))); if (item.basis) meta.append(make('span', 'basis', item.basis));
   const source = document.createElement('a'); source.className = 'source';
@@ -66,6 +80,49 @@ function renderMonths(){
   for(let m=0;m<12;m++){const b=make('button',m===state.month.getMonth()?'active':'',`${m+1}月`);b.onclick=()=>{state.month.setMonth(m);render();};host.append(b);}
 }
 function render(){renderFilters();renderMonths();renderCalendar();renderLists();}
+$('#favorites-toggle').addEventListener('click', () => {
+  state.favoritesOnly = !state.favoritesOnly;
+  const button = $('#favorites-toggle');
+  button.classList.toggle('selected', state.favoritesOnly);
+  button.setAttribute('aria-pressed', String(state.favoritesOnly));
+  render();
+});
+function escapeIcs(value) { return safe(value).replace(/\\/g, '\\\\').replace(/\r?\n/g, '\\n').replace(/,/g, '\\,').replace(/;/g, '\\;'); }
+function foldIcsLine(line) {
+  const encoder = new TextEncoder();
+  let output = '', part = '', bytes = 0;
+  for (const char of line) {
+    const size = encoder.encode(char).length;
+    if (bytes + size > 73) { output += part + '\r\n '; part = ''; bytes = 1; }
+    part += char; bytes += size;
+  }
+  return output + part;
+}
+function exportCalendar() {
+  const year = state.month.getFullYear(), month = state.month.getMonth();
+  const events = entries.filter(item => {
+    if (!matches(item) || !item.date) return false;
+    if (state.query) return true;
+    const date = new Date(item.date + 'T00:00:00');
+    return date.getFullYear() === year && date.getMonth() === month;
+  }).sort((a,b) => a.date.localeCompare(b.date));
+  if (!events.length) { alert('この表示条件には、カレンダーに追加できる日付確定済みの予定がありません。'); return; }
+  const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+  const lines = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Tsugiitsu//Release Calendar//JA','CALSCALE:GREGORIAN','METHOD:PUBLISH'];
+  for (const item of events) {
+    const uid = encodeURIComponent(item.kind + '-' + item.series + '-' + item.date + '-' + item.title) + '@tsugiitsu';
+    lines.push('BEGIN:VEVENT', 'UID:' + uid, 'DTSTAMP:' + stamp, 'DTSTART;VALUE=DATE:' + item.date.replace(/-/g, ''), 'SUMMARY:' + escapeIcs(item.series + ' - ' + item.title), 'DESCRIPTION:' + escapeIcs([item.dateLabel, item.detail, item.basis, item.source].filter(Boolean).join(' | ')));
+    try { const url = new URL(safe(item.url), location.href); if (url.protocol === 'https:' || url.protocol === 'http:') lines.push('URL:' + escapeIcs(url.href)); } catch {}
+    lines.push('END:VEVENT');
+  }
+  lines.push('END:VCALENDAR');
+  const blob = new Blob([lines.map(foldIcsLine).join('\r\n') + '\r\n'], {type:'text/calendar;charset=utf-8'});
+  const link = document.createElement('a'); link.href = URL.createObjectURL(blob);
+  link.download = 'tsugiitsu-' + year + '-' + String(month + 1).padStart(2, '0') + '.ics';
+  link.click(); setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+}
+$('#export-calendar').addEventListener('click', exportCalendar);
+
 document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>{state.kind=b.dataset.kind;state.filter='';document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('active',x===b));render();}));
 document.querySelectorAll('.view-switch button').forEach(b=>b.addEventListener('click',()=>{state.view=b.dataset.view;document.querySelectorAll('.view-switch button').forEach(x=>x.classList.toggle('active',x===b));$('#list-view').hidden=state.view!=='list';$('#calendar-view').hidden=state.view!=='calendar';}));
 function setTheme(theme){
