@@ -23,10 +23,12 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+      - name: Validate schedule data
+        run: python .github/scripts/validate_schedule.py
       - name: Prepare public files
         run: |
           mkdir -p _site/data
-          cp index.html styles.css app.js help.html _site/
+          cp index.html styles.css app.js help.html manifest.webmanifest service-worker.js icon.svg _site/
           cp data/schedule.json _site/data/
       - name: Configure Pages
         uses: actions/configure-pages@v5
