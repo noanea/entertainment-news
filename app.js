@@ -4,6 +4,7 @@ const initialParams = new URLSearchParams(location.search);
 if (['all','anime','manga','game'].includes(initialParams.get('kind'))) state.kind = initialParams.get('kind');
 if (initialParams.has('q')) state.query = initialParams.get('q').trim().toLocaleLowerCase('ja-JP');
 if (['month','7','30','90','all'].includes(initialParams.get('range'))) state.range = initialParams.get('range');
+if (state.query) state.range = 'all';
 if (['list','calendar'].includes(initialParams.get('view'))) state.view = initialParams.get('view');
 if (['date','title','kind'].includes(initialParams.get('sort'))) state.sort = initialParams.get('sort');
 state.filter = initialParams.get('platform') || '';
@@ -20,6 +21,7 @@ if (/^\d{4}-\d{2}$/.test(monthParam || '')) { const [year,month] = monthParam.sp
 const safe = (value) => String(value ?? '');
 function make(tag, cls, value) { const n = document.createElement(tag); if (cls) n.className = cls; if (value) n.textContent = value; return n; }
 function matches(item) { return (!state.favoritesOnly || favoriteSeries.has(item.series)) && (state.kind === 'all' || item.kind === state.kind) && (!state.filter || (item.filters || []).includes(state.filter)) && (!state.query || `${item.title} ${item.series} ${item.detail || ''}`.toLocaleLowerCase('ja-JP').includes(state.query)); }
+function isInRange(item) { if(!item.date)return false;if(state.range==='all')return true;const date=new Date(`${item.date}T00:00:00`);if(state.range==='month')return date.getFullYear()===state.month.getFullYear()&&date.getMonth()===state.month.getMonth();if(['7','30','90'].includes(state.range)){const start=new Date();start.setHours(0,0,0,0);const end=new Date(start);end.setDate(end.getDate()+Number(state.range)-1);return date>=start&&date<=end;}return true; }
 function tagLabel(tag) { return ({Netflix:'Netflix','Prime Video':'Prime Video',TV:'テレビ放送',Steam:'Steam',PS5:'PS5',PS4:'PS4',Switch:'Switch','Switch 2':'Switch 2',Xbox:'Xbox',ジャンプ:'ジャンプ',マガジン:'マガジン'})[tag] || tag; }
 function card(item) {
   const article = make('article', 'event-card');
@@ -69,9 +71,7 @@ function renderLists() {
   const selected=entries.filter(matches);
   const dateList=$('#date-list'); dateList.replaceChildren();
   const y=state.month.getFullYear(), m=state.month.getMonth();
-  const now=new Date(); now.setHours(0,0,0,0);
-  const inRange=(item)=>{if(!item.date||state.query||state.range==='all')return true;const date=new Date(`${item.date}T00:00:00`);if(state.range==='month')return date.getFullYear()===y&&date.getMonth()===m;if(state.range==='7'||state.range==='30'||state.range==='90'){const end=new Date(now);end.setDate(end.getDate()+Number(state.range));return date>=now&&date<=end;}return true;};
-  const dated=selected.filter(x=>x.date&&inRange(x)).sort((a,b)=>a.date.localeCompare(b.date));
+  const dated=selected.filter(isInRange).sort((a,b)=>a.date.localeCompare(b.date));
   const kindOrder={anime:0,manga:1,game:2};
   const innerSort=(a,b)=>state.sort==='title'?a.series.localeCompare(b.series,'ja'):state.sort==='kind'?(kindOrder[a.kind]??9)-(kindOrder[b.kind]??9)||a.series.localeCompare(b.series,'ja'):0;
   const groups=new Map(); dated.forEach(item=>{if(!groups.has(item.date))groups.set(item.date,[]);groups.get(item.date).push(item);});
@@ -92,10 +92,10 @@ function renderLists() {
 function renderMonths(){
   const y=state.month.getFullYear();$('#year-title').textContent=`${y}年`;
   const host=$('#month-options');host.replaceChildren();
-  for(let m=0;m<12;m++){const b=make('button',m===state.month.getMonth()?'active':'',`${m+1}月`);b.onclick=()=>{state.month.setMonth(m);render();};host.append(b);}
+  for(let m=0;m<12;m++){const b=make('button',m===state.month.getMonth()?'active':'',`${m+1}月`);b.onclick=()=>{state.range='month';state.month.setMonth(m);render();};host.append(b);}
 }
 function syncUrl(){const p=new URLSearchParams();if(state.kind!=='all')p.set('kind',state.kind);if(state.filter)p.set('platform',state.filter);if(state.query)p.set('q',$('#search').value.trim());if(state.range!=='month')p.set('range',state.range);if(state.month.getFullYear()!==today.getFullYear()||state.month.getMonth()!==today.getMonth())p.set('month',`${state.month.getFullYear()}-${String(state.month.getMonth()+1).padStart(2,'0')}`);if(state.view!=='list')p.set('view',state.view);if(state.favoritesOnly)p.set('fav','1');if(state.sort!=='date')p.set('sort',state.sort);const query=p.toString();history.replaceState(null,'',query?`${location.pathname}?${query}`:location.pathname);}
-function render(){renderFilters();renderMonths();renderCalendar();renderLists();document.querySelectorAll('[data-range]').forEach(b=>b.classList.toggle('active',b.dataset.range===state.range));$('#favorites-toggle').classList.toggle('selected',state.favoritesOnly);$('#favorites-toggle').setAttribute('aria-pressed',String(state.favoritesOnly));$('#sort-order').value=state.sort;syncUrl();}
+function render(){renderFilters();renderMonths();renderCalendar();renderLists();document.querySelectorAll('[data-range]').forEach(b=>b.classList.toggle('active',b.dataset.range===state.range));if(state.view==='list')$('#month-title').textContent=state.query?'検索結果':state.range==='all'?'全期間の予定':state.range==='month'?`${state.month.getFullYear()}年${state.month.getMonth()+1}月`:`直近${state.range}日の予定`;$('#favorites-toggle').classList.toggle('selected',state.favoritesOnly);$('#favorites-toggle').setAttribute('aria-pressed',String(state.favoritesOnly));$('#sort-order').value=state.sort;syncUrl();}
 $('#favorites-toggle').addEventListener('click', () => {
   state.favoritesOnly = !state.favoritesOnly;
   const button = $('#favorites-toggle');
@@ -115,7 +115,7 @@ function foldIcsLine(line) {
 }
 function exportCalendar() {
   const year = state.month.getFullYear(), month = state.month.getMonth();
-  const events = entries.filter(item => matches(item) && item.date && (state.query || (new Date(`${item.date}T00:00:00`).getFullYear() === year && new Date(`${item.date}T00:00:00`).getMonth() === month))).sort((a,b) => a.date.localeCompare(b.date));
+  const events = entries.filter(item => matches(item) && isInRange(item)).sort((a,b) => a.date.localeCompare(b.date));
   if (!events.length) { alert('この表示条件には、カレンダーに追加できる日付確定済みの予定がありません。'); return; }
   const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
   const lines = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Tsugiitsu//Release Calendar//JA','CALSCALE:GREGORIAN','METHOD:PUBLISH'];
@@ -128,7 +128,7 @@ function exportCalendar() {
   lines.push('END:VCALENDAR');
   const blob = new Blob([lines.map(foldIcsLine).join('\r\n') + '\r\n'], {type:'text/calendar;charset=utf-8'});
   const link = document.createElement('a'); link.href = URL.createObjectURL(blob);
-  link.download = `tsugiitsu-${year}-${String(month + 1).padStart(2, '0')}.ics`;
+  link.download = state.range==='month'?`tsugiitsu-${year}-${String(month + 1).padStart(2, '0')}.ics`:`tsugiitsu-${state.range}.ics`;
   link.click(); setTimeout(() => URL.revokeObjectURL(link.href), 1000);
 }
 $('#export-calendar').addEventListener('click', exportCalendar);
@@ -138,7 +138,7 @@ $('#search').value=initialParams.get('q')||'';
 document.querySelectorAll('[data-range]').forEach(b=>b.addEventListener('click',()=>{state.range=b.dataset.range;state.view='list';document.querySelectorAll('.view-switch button').forEach(x=>x.classList.toggle('active',x.dataset.view==='list'));$('#list-view').hidden=false;$('#calendar-view').hidden=true;render();}));
 $('#sort-order').addEventListener('change',e=>{state.sort=e.target.value;render();});
 $('#clear-filters').addEventListener('click',()=>{state.kind='all';state.filter='';state.query='';state.favoritesOnly=false;state.range='month';state.sort='date';state.month=new Date(today);state.view='list';$('#search').value='';document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('active',x.dataset.kind==='all'));document.querySelectorAll('.view-switch button').forEach(x=>x.classList.toggle('active',x.dataset.view==='list'));$('#list-view').hidden=false;$('#calendar-view').hidden=true;render();});
-document.querySelectorAll('.view-switch button').forEach(b=>b.addEventListener('click',()=>{state.view=b.dataset.view;document.querySelectorAll('.view-switch button').forEach(x=>x.classList.toggle('active',x===b));$('#list-view').hidden=state.view!=='list';$('#calendar-view').hidden=state.view!=='calendar';syncUrl();}));
+document.querySelectorAll('.view-switch button').forEach(b=>b.addEventListener('click',()=>{state.view=b.dataset.view;if(state.view==='calendar')state.range='month';document.querySelectorAll('.view-switch button').forEach(x=>x.classList.toggle('active',x===b));$('#list-view').hidden=state.view!=='list';$('#calendar-view').hidden=state.view!=='calendar';render();}));
 function setTheme(theme){
   const allowed=['sky','lavender','coral','navy'];if(!allowed.includes(theme))theme='sky';
   document.documentElement.dataset.theme=theme;
@@ -152,14 +152,14 @@ document.querySelectorAll('.theme-choice').forEach(b=>b.addEventListener('click'
 document.addEventListener('click',e=>{if(!e.target.closest('.theme-menu'))closeThemeMenu();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!themePopover.hidden){closeThemeMenu();themeToggle.focus();}});
 try{setTheme(localStorage.getItem('tsugiitsu-theme')||'sky');}catch{setTheme('sky');}
-$('#search').addEventListener('input',e=>{state.query=e.target.value.trim().toLocaleLowerCase('ja-JP');if(state.query&&state.view==='calendar'){state.view='list';document.querySelectorAll('.view-switch button').forEach(x=>x.classList.toggle('active',x.dataset.view==='list'));$('#list-view').hidden=false;$('#calendar-view').hidden=true;}render();});
+$('#search').addEventListener('input',e=>{state.query=e.target.value.trim().toLocaleLowerCase('ja-JP');if(state.query){state.range='all';if(state.view==='calendar'){state.view='list';document.querySelectorAll('.view-switch button').forEach(x=>x.classList.toggle('active',x.dataset.view==='list'));$('#list-view').hidden=false;$('#calendar-view').hidden=true;}}render();});
 document.addEventListener('keydown',e=>{if(e.key==='/'&&!e.ctrlKey&&!e.metaKey&&!e.altKey&&!['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)){e.preventDefault();$('#search').focus();}if(e.key==='Escape'&&document.activeElement===$('#search')&&$('#search').value){$('#search').value='';state.query='';render();}});
 $('#share-view').addEventListener('click',async()=>{const url=location.href;try{if(navigator.share)await navigator.share({title:'つぎいつ？の予定',url});else{await navigator.clipboard.writeText(url);$('#share-view').textContent='リンクをコピーしました';setTimeout(()=>$('#share-view').textContent='この表示を共有',1800);}}catch(error){if(error.name!=='AbortError'){try{await navigator.clipboard.writeText(url);$('#share-view').textContent='リンクをコピーしました';setTimeout(()=>$('#share-view').textContent='この表示を共有',1800);}catch{$('#share-view').textContent='URLをアドレスバーからコピーしてください';}}}});
 $('#manage-favorites').addEventListener('click',()=>$('#favorites-dialog').showModal());
 $('#export-favorites').addEventListener('click',()=>{const blob=new Blob([JSON.stringify({version:1,favorites:[...favoriteSeries],theme:document.documentElement.dataset.theme||'sky'},null,2)],{type:'application/json'});const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='tsugiitsu-settings.json';link.click();setTimeout(()=>URL.revokeObjectURL(link.href),1000);$('#backup-status').textContent='バックアップを保存しました。';});
 $('#import-favorites').addEventListener('click',()=>$('#favorites-file').click());
 $('#favorites-file').addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{if(file.size>100000)throw Error();const data=JSON.parse(await file.text());if(!Array.isArray(data.favorites)||data.favorites.length>200||!data.favorites.every(x=>typeof x==='string'&&x.length<120))throw Error();favoriteSeries=new Set(data.favorites);localStorage.setItem('tsugiitsu-favorites',JSON.stringify([...favoriteSeries]));if(['sky','lavender','coral','navy'].includes(data.theme))setTheme(data.theme);$('#backup-status').textContent=`${favoriteSeries.size}件のお気に入りを復元しました。`;render();}catch{$('#backup-status').textContent='このバックアップファイルを読み込めませんでした。';}e.target.value='';});
-$('#prev').onclick=()=>{state.month.setFullYear(state.month.getFullYear()-1);render();}; $('#next').onclick=()=>{state.month.setFullYear(state.month.getFullYear()+1);render();}; $('#today').onclick=()=>{state.month=new Date(today);render();};
+$('#prev').onclick=()=>{state.range='month';state.month.setFullYear(state.month.getFullYear()-1);render();}; $('#next').onclick=()=>{state.range='month';state.month.setFullYear(state.month.getFullYear()+1);render();}; $('#today').onclick=()=>{state.range='month';state.month=new Date(today);render();};
 fetch('data/schedule.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error();return r.json();}).then(d=>{entries=Array.isArray(d.items)?d.items:[];$('#last-updated').textContent=d.updatedAt?`予定確認日：${d.updatedAt}`:'予定確認日：未記載';render();}).catch(()=>{$('#last-updated').textContent='予定データを読み込めませんでした';$('#undated').append(make('p','empty','予定データを読み込めませんでした。'));});
 $('#list-view').hidden=state.view!=='list';$('#calendar-view').hidden=state.view!=='calendar';document.querySelectorAll('.view-switch button').forEach(x=>x.classList.toggle('active',x.dataset.view===state.view));
 
