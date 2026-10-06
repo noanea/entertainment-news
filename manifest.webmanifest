@@ -1,0 +1,14 @@
+{
+  "name": "つぎいつ？ アニメ・漫画・ゲーム予定表",
+  "short_name": "つぎいつ？",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4faff",
+  "theme_color": "#78bced",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
+
