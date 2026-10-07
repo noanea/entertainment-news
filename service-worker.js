@@ -1,9 +1,9 @@
-const CACHE_NAME = 'tsugiitsu-shell-1.50.0g';
+const CACHE_NAME = 'tsugiitsu-shell-1.50.0h';
 const SHELL_FILES = [
   './',
   './index.html',
-  './styles.css?v=1.50.0g',
-  './app.js?v=1.50.0g',
+  './styles.css?v=1.50.0h',
+  './app.js?v=1.50.0h',
   './help.html',
   './manifest.webmanifest',
   './icon.svg',
